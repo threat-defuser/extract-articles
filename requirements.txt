@@ -1,0 +1,7 @@
+google-cloud-firestore
+justext
+requests
+black
+vulture
+lxml
+tqdm
