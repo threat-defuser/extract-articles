@@ -10,14 +10,23 @@ from google.cloud import firestore
 def extract_text(url: str, language: str) -> (list[str], str):
     headings = []
     paragraphs = []
-    r = requests.get(url)
-    page = r.text.encode("utf-8")
+    response = requests.get(url)
+    page = response.text.encode("utf-8")
     for paragraph in justext.justext(page, justext.get_stoplist(language)):
         if paragraph.class_type == "good":
             if paragraph.heading:
                 headings.append(paragraph.text)
             paragraphs.append(paragraph.text)
-    return headings, "\n".join(paragraphs)
+    # returning response.url since url might be redirected
+    return response.url, headings, "\n".join(paragraphs)
+
+
+def test_extract_test():
+    url = "https://w.wiki/U"
+    language = "English"
+    final_url, headings, text = extract_text(url, language)
+    assert final_url == "https://en.wikipedia.org/wiki/URL_shortening"
+    assert "URL shortening is a technique on the World Wide Web" in text
 
 
 def get_timestamp() -> str:
@@ -42,7 +51,7 @@ def get_urls(sitemap: str) -> list[str]:
 
 
 def print_data(url: str, language: str):
-    headings, text = extract_text(url, language)
+    _, headings, text = extract_text(url, language)
     timestamp = get_timestamp()
     document_id = hash_url(url)
     print(f"\nheadings: {headings}")
@@ -52,7 +61,7 @@ def print_data(url: str, language: str):
 
 
 def extract_and_write_to_db(url: str, language: str):
-    headings, text = extract_text(url, language)
+    _, headings, text = extract_text(url, language)
     timestamp = get_timestamp()
     document_id = hash_url(url)
 
@@ -66,4 +75,5 @@ if __name__ == "__main__":
     urls = get_urls("https://www.lykten.no/sitemap.xml")
     language = "Norwegian_Bokmal"
     for url in tqdm(urls):
-        extract_and_write_to_db(url, language)
+        # extract_and_write_to_db(url, language)
+        print_data(url, language)
