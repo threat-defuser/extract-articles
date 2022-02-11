@@ -41,6 +41,16 @@ def get_urls(sitemap: str) -> list[str]:
     return urls
 
 
+def print_data(url: str, language: str):
+    headings, text = extract_text(url, language)
+    timestamp = get_timestamp()
+    document_id = hash_url(url)
+    print(f"\nheadings: {headings}")
+    print(f"\ntext: {text}")
+    print(f"\ntimestamp: {timestamp}")
+    print(f"\ndocument_id: {document_id}")
+
+
 def extract_and_write_to_db(url: str, language: str):
     headings, text = extract_text(url, language)
     timestamp = get_timestamp()
