@@ -1,5 +1,6 @@
 from tqdm import tqdm
 import justext
+import time
 import requests
 from lxml import etree
 from datetime import datetime
@@ -10,13 +11,19 @@ from google.cloud import firestore
 def extract_text(url: str, language: str) -> (list[str], str):
     headings = []
     paragraphs = []
+    t0 = time.time()
     response = requests.get(url)
     page = response.text.encode("utf-8")
+    print("time spent in requests:", time.time() - t0)
+
+    t0 = time.time()
     for paragraph in justext.justext(page, justext.get_stoplist(language)):
         if paragraph.class_type == "good":
             if paragraph.heading:
                 headings.append(paragraph.text)
             paragraphs.append(paragraph.text)
+    print("time spent in justext:", time.time() - t0)
+
     # returning response.url since url might be redirected
     return response.url, headings, "\n".join(paragraphs)
 
