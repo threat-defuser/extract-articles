@@ -8,11 +8,11 @@ import hashlib
 from google.cloud import firestore
 
 
-def extract_text(url: str, language: str) -> (list[str], str):
+def extract_text(url: str, language: str, session) -> (list[str], str):
     headings = []
     paragraphs = []
     t0 = time.time()
-    response = requests.get(url)
+    response = session.get(url)
     page = response.text.encode("utf-8")
     print("time spent in requests:", time.time() - t0)
 
@@ -31,7 +31,8 @@ def extract_text(url: str, language: str) -> (list[str], str):
 def test_extract_test():
     url = "https://w.wiki/U"
     language = "English"
-    final_url, headings, text = extract_text(url, language)
+    session = requests.Session()
+    final_url, headings, text = extract_text(url, language, session)
     assert final_url == "https://en.wikipedia.org/wiki/URL_shortening"
     assert "URL shortening is a technique on the World Wide Web" in text
 
@@ -57,18 +58,18 @@ def get_urls(sitemap: str) -> list[str]:
     return urls
 
 
-def print_data(url: str, language: str):
-    _, headings, text = extract_text(url, language)
+def print_data(url: str, language: str, session):
+    _, headings, text = extract_text(url, language, session)
     timestamp = get_timestamp()
     document_id = hash_url(url)
-    print(f"\nheadings: {headings}")
-    print(f"\ntext: {text}")
-    print(f"\ntimestamp: {timestamp}")
-    print(f"\ndocument_id: {document_id}")
+    # print(f"\nheadings: {headings}")
+    # print(f"\ntext: {text}")
+    # print(f"\ntimestamp: {timestamp}")
+    # print(f"\ndocument_id: {document_id}")
 
 
-def extract_and_write_to_db(url: str, language: str):
-    _, headings, text = extract_text(url, language)
+def extract_and_write_to_db(url: str, language: str, session):
+    _, headings, text = extract_text(url, language, session)
     timestamp = get_timestamp()
     document_id = hash_url(url)
 
@@ -81,6 +82,7 @@ def extract_and_write_to_db(url: str, language: str):
 if __name__ == "__main__":
     urls = get_urls("https://www.lykten.no/sitemap.xml")
     language = "Norwegian_Bokmal"
+    session = requests.Session()
     for url in tqdm(urls):
-        # extract_and_write_to_db(url, language)
-        print_data(url, language)
+        # extract_and_write_to_db(url, language, session)
+        print_data(url, language, session)
