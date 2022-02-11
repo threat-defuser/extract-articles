@@ -6,3 +6,4 @@ vulture
 lxml
 tqdm
 pytest
+beautifulsoup4
