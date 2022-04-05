@@ -3,7 +3,7 @@ import click
 from tqdm import tqdm
 import csv
 
-from extract_plaintext import extract
+from juicer import extract
 from db import make_sure_table_exists, save_entry, read_entries
 
 
