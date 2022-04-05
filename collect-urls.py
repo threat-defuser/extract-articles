@@ -5,6 +5,7 @@ import click
 import yaml
 import sys
 import csv
+import tldextract
 
 
 def get_urls(sitemap: str) -> list[str]:
@@ -39,6 +40,11 @@ def filter_urls(urls, include_patterns):
     return matching_urls
 
 
+def extract_tld(url):
+    ext = tldextract.extract(url)
+    return f"{ext.domain}.{ext.suffix}"
+
+
 @click.command()
 @click.option(
     "--sites", help="The YML file describing the sites. This file is only read."
@@ -58,11 +64,14 @@ def main(sites, out_file, pages_per_site):
         writer = csv.writer(f)
         writer.writerow(["name", "url", "language"])
         for site in extract_sites(sites):
+            site_tld = extract_tld(site["url"])
             urls = get_urls(site["url"])
             if "include" in site:
                 urls = filter_urls(urls, site["include"])
             for url in urls[:pages_per_site]:
-                writer.writerow([site["name"], url, site["language"]])
+                tld = extract_tld(url)
+                if tld == site_tld:
+                    writer.writerow([site["name"], url, site["language"]])
 
 
 if __name__ == "__main__":

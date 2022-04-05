@@ -8,3 +8,4 @@ tqdm
 pytest
 pyyaml
 beautifulsoup4
+tldextract
