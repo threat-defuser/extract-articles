@@ -7,18 +7,18 @@ from juicer import extract
 from db import make_sure_table_exists, save_entry, read_entries
 
 
-def extract_and_save(db_file_name: str, url_language_tuples: tuple[str, str]):
+def extract_and_save(db_file_name: str, pages: tuple[str, str, str]):
     make_sure_table_exists(db_file_name)
     session = requests.Session()
-    for (url, language) in tqdm(url_language_tuples):
+    for (site_name, url, language) in tqdm(pages):
         final_url, title, _headings, text, html = extract(url, language, session)
-        save_entry(db_file_name, final_url, title, text, html)
+        save_entry(db_file_name, site_name, final_url, title, text, html)
 
 
 def test_extract_and_save():
     db_file_name = "articles.db"
-    url_language_tuples = [("https://w.wiki/U", "English")]
-    extract_and_save(db_file_name, url_language_tuples)
+    pages = [("Example site", "https://w.wiki/U", "English")]
+    extract_and_save(db_file_name, pages)
     _rows = read_entries(db_file_name)
 
 
@@ -34,14 +34,16 @@ def _hash_url(url: str) -> str:
 )
 @click.option("--db-file", required=True, help="The SQLite database file.")
 def main(csv_file, db_file):
+    site_names = []
     urls = []
     languages = []
     with open(csv_file) as f:
         for row in csv.DictReader(f):
+            site_names.append(row["name"])
             urls.append(row["url"])
             languages.append(row["language"])
-    url_language_tuples = list(zip(urls, languages))
-    extract_and_save(db_file, url_language_tuples)
+    pages = list(zip(site_names, urls, languages))
+    extract_and_save(db_file, pages)
 
 
 if __name__ == "__main__":
