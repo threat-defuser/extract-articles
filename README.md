@@ -15,8 +15,8 @@ Usage: collect-urls.py [OPTIONS]
 
 Options:
   --sites TEXT              The YML file describing the sites. This file is
-                            only read.
-  --out-file TEXT           The generated output CSV file.
+                            only read.  [required]
+  --out-file TEXT           The generated output CSV file.  [required]
   --pages-per-site INTEGER  Sample only so many pages per site for testing
                             purposes [default: collect all pages].
   --help                    Show this message and exit.
@@ -37,7 +37,8 @@ Usage: process-urls.py [OPTIONS]
 
 Options:
   --csv-file TEXT  The input CSV file containing list of URLs to process.
-  --db-file TEXT   The SQLite database file.
+                   [required]
+  --db-file TEXT   The SQLite database file.  [required]
   --help           Show this message and exit.
 ```
 

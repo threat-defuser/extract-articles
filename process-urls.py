@@ -28,9 +28,11 @@ def _hash_url(url: str) -> str:
 
 @click.command()
 @click.option(
-    "--csv-file", help="The input CSV file containing list of URLs to process."
+    "--csv-file",
+    required=True,
+    help="The input CSV file containing list of URLs to process.",
 )
-@click.option("--db-file", help="The SQLite database file.")
+@click.option("--db-file", required=True, help="The SQLite database file.")
 def main(csv_file, db_file):
     urls = []
     languages = []

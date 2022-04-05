@@ -47,9 +47,11 @@ def extract_tld(url):
 
 @click.command()
 @click.option(
-    "--sites", help="The YML file describing the sites. This file is only read."
+    "--sites",
+    required=True,
+    help="The YML file describing the sites. This file is only read.",
 )
-@click.option("--out-file", help="The generated output CSV file.")
+@click.option("--out-file", required=True, help="The generated output CSV file.")
 @click.option(
     "--pages-per-site",
     type=int,
