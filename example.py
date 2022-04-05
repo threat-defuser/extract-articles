@@ -9,7 +9,7 @@ from google.cloud import firestore
 from bs4 import BeautifulSoup
 
 
-def extract_text(url: str, language: str, session) -> (list[str], str):
+def extract(url: str, language: str, session) -> (list[str], str):
     headings = []
     paragraphs = []
     t0 = time.time()
@@ -31,11 +31,11 @@ def extract_text(url: str, language: str, session) -> (list[str], str):
     return response.url, title.string, headings, "\n".join(paragraphs), html
 
 
-def test_extract_test():
+def test_extract():
     url = "https://w.wiki/U"
     language = "English"
     session = requests.Session()
-    final_url, title, headings, text, html = extract_text(url, language, session)
+    final_url, title, headings, text, html = extract(url, language, session)
     assert final_url == "https://en.wikipedia.org/wiki/URL_shortening"
     assert "URL shortening is a technique on the World Wide Web" in text
 
@@ -58,7 +58,7 @@ def get_urls(sitemap: str) -> list[str]:
 
 
 def extract_and_write_to_db(url: str, language: str, session):
-    final_url, title, headings, text, html = extract_text(url, language, session)
+    final_url, title, headings, text, html = extract(url, language, session)
     unix_time = int(time.time())
     document_id = f"{hash_url(url)}-{unix_time}"
 
