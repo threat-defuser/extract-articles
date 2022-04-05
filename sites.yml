@@ -1,0 +1,5 @@
+- url: "https://www.lykten.no/sitemap.xml"
+  language: "Norwegian_Bokmal"
+  include:
+    - "utenriks"
+    - "innenriks"
