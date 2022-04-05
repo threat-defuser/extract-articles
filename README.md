@@ -8,7 +8,12 @@ Code and scripts to extract data and populate the (example) database.
 
 ### High level overview
 
-Write me ...
+```mermaid
+flowchart TD
+    A(sites.yml) -- collect-urls.py --> C(urls.csv);
+    B(your own script) --> C;
+    C -- process-urls.py --> D(SQLite database);
+```
 
 
 ### Generating list of URLs
