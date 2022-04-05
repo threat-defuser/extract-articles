@@ -1,2 +1,3 @@
 venv
 container.sif
+__pycache__/
