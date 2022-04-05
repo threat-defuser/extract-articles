@@ -19,7 +19,7 @@ def get_urls(sitemap: str) -> list[str]:
     return urls
 
 
-def extract_data(file_name: str):
+def extract_sites(file_name: str):
     with open(file_name, "r") as f:
         try:
             data = yaml.safe_load(f)
@@ -28,23 +28,39 @@ def extract_data(file_name: str):
     return data
 
 
+def filter_urls(urls, include_patterns):
+    regex_objects = [re.compile(pattern) for pattern in include_patterns]
+    matching_urls = []
+    for url in urls:
+        for regex in regex_objects:
+            if regex.search(url):
+                matching_urls.append(url)
+                break
+    return matching_urls
+
+
 @click.command()
 @click.option(
     "--sites", help="The YML file describing the sites. This file is only read."
 )
 @click.option("--out-file", help="The generated output CSV file.")
-def main(sites, out_file):
+@click.option(
+    "--pages-per-site",
+    type=int,
+    help="Sample only so many pages per site for testing purposes [default: collect all pages].",
+)
+def main(sites, out_file, pages_per_site):
+
+    if pages_per_site is None:
+        pages_per_site = sys.maxsize
+
     with open(out_file, "w", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["name", "url", "language"])
-        for site in extract_data(sites):
-            urls = get_urls(site["url"])
-            regex_objects = [re.compile(pattern) for pattern in site["include"]]
-            for url in urls:
-                for regex in regex_objects:
-                    if regex.search(url):
-                        writer.writerow([site["name"], url, site["language"]])
-                        break
+        for site in extract_sites(sites):
+            urls = filter_urls(get_urls(site["url"]), site["include"])
+            for url in urls[:pages_per_site]:
+                writer.writerow([site["name"], url, site["language"]])
 
 
 if __name__ == "__main__":

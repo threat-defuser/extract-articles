@@ -14,9 +14,12 @@ $ python collect-urls.py --help
 Usage: collect-urls.py [OPTIONS]
 
 Options:
-  --sites TEXT     The YML file describing the sites. This file is only read.
-  --out-file TEXT  The generated output CSV file.
-  --help           Show this message and exit.
+  --sites TEXT              The YML file describing the sites. This file is
+                            only read.
+  --out-file TEXT           The generated output CSV file.
+  --pages-per-site INTEGER  Sample only so many pages per site for testing
+                            purposes [default: collect all pages].
+  --help                    Show this message and exit.
 ```
 
 Example:
