@@ -1,8 +1,10 @@
 justext
 requests
 black
+click
 vulture
 lxml
 tqdm
 pytest
+pyyaml
 beautifulsoup4
