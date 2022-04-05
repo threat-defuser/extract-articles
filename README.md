@@ -1,3 +1,6 @@
+[![test status](https://github.com/threat-defuser/extract-articles/workflows/Test/badge.svg)](https://github.com/threat-defuser/extract-articles/actions)
+
+
 # extract-articles
 
 Code and scripts to extract data and populate the (example) database.
