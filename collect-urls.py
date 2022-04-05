@@ -58,7 +58,9 @@ def main(sites, out_file, pages_per_site):
         writer = csv.writer(f)
         writer.writerow(["name", "url", "language"])
         for site in extract_sites(sites):
-            urls = filter_urls(get_urls(site["url"]), site["include"])
+            urls = get_urls(site["url"])
+            if "include" in site:
+                urls = filter_urls(urls, site["include"])
             for url in urls[:pages_per_site]:
                 writer.writerow([site["name"], url, site["language"]])
 
