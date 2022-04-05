@@ -36,14 +36,14 @@ def extract_data(file_name: str):
 def main(sites, out_file):
     with open(out_file, "w", newline="") as f:
         writer = csv.writer(f)
-        writer.writerow(["url", "language"])
+        writer.writerow(["name", "url", "language"])
         for site in extract_data(sites):
             urls = get_urls(site["url"])
             regex_objects = [re.compile(pattern) for pattern in site["include"]]
             for url in urls:
                 for regex in regex_objects:
                     if regex.search(url):
-                        writer.writerow([url, site["language"]])
+                        writer.writerow([site["name"], url, site["language"]])
                         break
 
 

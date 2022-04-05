@@ -1,4 +1,5 @@
 - url: "https://www.lykten.no/sitemap.xml"
+  name: "Lykten.no"
   language: "Norwegian_Bokmal"
   include:
     - "utenriks"
