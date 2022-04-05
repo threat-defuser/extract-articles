@@ -1,4 +1,4 @@
-# extract-data
+# extract-articles
 
 Code and scripts to extract data and populate the (example) database.
 
