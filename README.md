@@ -6,7 +6,14 @@
 Code and scripts to extract data and populate the (example) database.
 
 
-## Generating list of URLs
+### High level overview
+
+Write me ...
+
+
+### Generating list of URLs
+
+Description of the YAML file here ...
 
 ```console
 $ python collect-urls.py --help
@@ -27,8 +34,20 @@ Example:
 $ python collect-urls.py --sites sites.yml --out-file urls.csv
 ```
 
+Structure of the generated CSV file (example):
+```csv
+name,url,language
+...,...,...
+```
 
-## Processing list of URLs
+
+### Processing list of URLs
+
+This step reads a CSV file with page site names, URLs, and languages and uses
+this information to fetch the HTML, post-process it, and to save it to
+database. Currently it both downloads the HTML and post-processes it. Later we
+can separate this into two steps: fetching all HTML and post-processing all
+HTML as a follow-up step.
 
 ```console
 $ python process-urls.py --help
