@@ -2,8 +2,6 @@
 
 Code and scripts to extract data and populate the (example) database.
 
-- Status: experimental
-
 
 ## Generating list of URLs
 
@@ -20,5 +18,24 @@ Options:
 
 Example:
 ```console
-$ python collect-urls.py --sites sites.yml --out-file generated.csv
+$ python collect-urls.py --sites sites.yml --out-file urls.csv
+```
+
+
+## Processing list of URLs
+
+```console
+$ python process-urls.py --help
+
+Usage: process-urls.py [OPTIONS]
+
+Options:
+  --csv-file TEXT  The input CSV file containing list of URLs to process.
+  --db-file TEXT   The SQLite database file.
+  --help           Show this message and exit.
+```
+
+Example:
+```console
+$ python process-urls.py --csv-file urls.csv --db-file articles.db
 ```
